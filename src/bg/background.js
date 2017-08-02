@@ -1,4 +1,4 @@
-var stellarNetUrl = "https://horizon-testnet.stellar.org";
+var stellarNetUrl = "https://horizon.stellar.org/";
 var stellarServer = new StellarSdk.Server(stellarNetUrl);
 
 var defaultSettings = {
