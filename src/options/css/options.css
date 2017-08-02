@@ -1,0 +1,15 @@
+body {
+    padding: 10px;
+}
+
+label {
+    display: inline-block;
+    clear: left;
+    width: 100px;
+    text-align: left;
+}
+
+select, input {
+  display: inline-block;
+  margin-bottom: 8px;
+}

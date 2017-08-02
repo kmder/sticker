@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sticker Options</title>
+        <link rel="stylesheet" type="text/css" href="css/options.css">
+    </head>
+
+    <body>
+        <label for="baseCurrency">Base currency:</label>
+        <select id="baseCurrency"></select>
+        </br>
+        <label for="refreshRate">Refresh rate:</label>
+        <select id="refreshRate">
+            <option value="0.1">10 seconds</option>
+            <option value="0.5">30 seconds</option>
+            <option value="1">1 minute</option>
+            <option value="5">5 minutes</option>
+            <option value="10">10 minutes</option>
+            <option value="60">1 hour</option>
+            <option value="120">2 hours</option>
+        </select>
+        </br>
+        <label for="account">Account to track:</label>
+        <input type="text" id="account"></input>
+
+        <div id="status"></div>
+
+        <script src="js/options.js"></script>
+    </body>
+</html>
