@@ -58,6 +58,11 @@ function updateBalance() {
     }
 }
 
+function updateTooltip(value, currency) {
+    var title = `1 XLM = ${value} ${currency}`
+    chrome.browserAction.setTitle({title});
+}
+
 function updatePrice() {
     var baseCurrency = settings.baseCurrency;
     var url = `https://api.coinmarketcap.com/v1/ticker/stellar/?convert=${baseCurrency}`;
@@ -66,6 +71,7 @@ function updatePrice() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
             var result = JSON.parse(xmlHttp.responseText);
             price = parseFloat(result[0][`price_${baseCurrency.toLowerCase()}`]);
+            updateTooltip(price, baseCurrency);
             updateBadgeText(balance * price);
         }
     }
