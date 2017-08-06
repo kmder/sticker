@@ -94,4 +94,8 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
     run();
 });
 
+chrome.browserAction.onClicked.addListener(function(tab) { 
+    run(); 
+});
+
 run();
