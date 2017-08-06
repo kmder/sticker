@@ -1,6 +1,6 @@
 {
   "name": "Sticker: Stellar Lumens (XLM) Price Ticker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "manifest_version": 2,
   "description": "Sticker is a Stellar Lumens price ticker",
   "homepage_url": "https://www.stellar.org/",
