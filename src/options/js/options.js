@@ -45,7 +45,7 @@ function initView() {
     restore_options();
 }
 
-var currencies = ["USD", "EUR", "CHF", "GBP", "AUD", "BGN", "BRL", "CAD", "CNY", "CZK", "DKK", "HKD", "HRK", "HUF", "IDR", "ILS", "INR", "JPY", "KRW", "MXN", "MYR", "NOK", "NZD", "PHP", "PLN", "RON", "RUB", "SEK", "SGD", "THB", "TRY", "ZAR"];
+var currencies = ["BTC", "USD", "EUR", "CHF", "GBP", "AUD", "BGN", "BRL", "CAD", "CNY", "CZK", "DKK", "HKD", "HRK", "HUF", "IDR", "ILS", "INR", "JPY", "KRW", "MXN", "MYR", "NOK", "NZD", "PHP", "PLN", "RON", "RUB", "SEK", "SGD", "THB", "TRY", "ZAR"];
 
 document.addEventListener('DOMContentLoaded', initView);
 registerOnChangeEventListner(document.getElementsByTagName('select'));

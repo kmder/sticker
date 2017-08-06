@@ -13,15 +13,21 @@ var balance = 1;
 var price = 0;
 
 function formatBalance(num) {
-  if (num < 1000) {
-    var r = num.toString().split(".")[0].length;
-    return numeral(num).format(r == 1 ? "0.0000" : r == 2 ? "0.000" : "0.00");
-  }
-  else {
-    var r = (Math.floor(Math.log(num) / Math.LN10) + 1) % 3;
-    return numeral(num).format(r == 0 ? "0.0a" : r == 1 ? "0.000a" : "0.0a");
-  }
+    var format = "";
+
+    if(num < 0.0001){
+        format = "0.0e+0";
+    }
+    else if (num < 1000) {
+        var r = num.toString().split(".")[0].length;
+        format = r == 1 ? "0.0000" : r == 2 ? "0.000" : "0.00";
+    }
+    else {
+        var r = (Math.floor(Math.log(num) / Math.LN10) + 1) % 3;
+        format = r == 0 ? "0.0a" : r == 1 ? "0.000a" : "0.0a";
+    }
   
+    return numeral(num).format(format);
 };
 
 function updateBadgeText(value) {
