@@ -16,7 +16,7 @@
       "dependencies/numeral.js",
       "src/bg/background.js"
       ],
-    "persistent": false
+    "persistent": true
   },
   "options_ui": {
     "page": "src/options/index.html",
