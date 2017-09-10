@@ -8,26 +8,57 @@ var defaultSettings = {
     };
 
 var settings = {};
-
 var balance = 1;
 var price = 0;
+var settedTimeout;
 
-function formatBalance(num) {
+async function getBalance(publicKey) {
+    return new Promise(
+        async (resolve, reject) => {
+            var result = 1; // by default, return a balance of 1
+
+            if (publicKey) {
+
+                try {
+                    var accountResult = await stellarServer.accounts().accountId(publicKey).call();
+                    result = parseFloat(accountResult.balances[0].balance);
+                } 
+                catch (e) {
+                    console.log(e);
+                }
+            }
+            resolve(result);
+        }
+    );
+}
+
+async function getPrice(baseCurrency) {
+    return new Promise(
+        async (resolve, reject) => {
+            let requestResult = await request({url: `https://api.coinmarketcap.com/v1/ticker/stellar/?convert=${baseCurrency}`})
+            var result = JSON.parse(requestResult);
+            var price = parseFloat(result[0][`price_${baseCurrency.toLowerCase()}`]);
+            resolve(price);
+        }
+    )
+}
+
+function formatBalance(value) {
     var format = "";
 
-    if(num < 0.0001){
+    if(value < 0.0001){
         format = "0.0e+0";
     }
-    else if (num < 1000) {
-        var r = num.toString().split(".")[0].length;
+    else if (value < 1000) {
+        var r = value.toString().split(".")[0].length;
         format = r == 1 ? "0.0000" : r == 2 ? "0.000" : "0.00";
     }
     else {
-        var r = (Math.floor(Math.log(num) / Math.LN10) + 1) % 3;
+        var r = (Math.floor(Math.log(value) / Math.LN10) + 1) % 3;
         format = r == 0 ? "0.0a" : r == 1 ? "0.000a" : "0.0a";
     }
   
-    return numeral(num).format(format);
+    return numeral(value).format(format);
 };
 
 function updateBadgeText(value) {
@@ -36,56 +67,24 @@ function updateBadgeText(value) {
         });
 }
 
-function updateBalance() {
-    var publicKey = settings.account;
-
-    if (publicKey) {
-        stellarServer.accounts()
-        .accountId(publicKey)
-        .call()
-        .then(function (accountResult) {
-            balance = parseFloat(accountResult.balances[0].balance);
-            updatePrice();
-        })
-        .catch(function (err) {
-            balance = 1;
-            updatePrice();
-        })
-    }
-    else {
-        balance = 1;
-        updatePrice();
-    }
-}
-
 function updateTooltip(value, currency) {
     var title = `1 XLM = ${value} ${currency}`
     chrome.browserAction.setTitle({title});
 }
 
-function updatePrice() {
-    var baseCurrency = settings.baseCurrency;
-    var url = `https://api.coinmarketcap.com/v1/ticker/stellar/?convert=${baseCurrency}`;
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
-            var result = JSON.parse(xmlHttp.responseText);
-            price = parseFloat(result[0][`price_${baseCurrency.toLowerCase()}`]);
-            updateTooltip(price, baseCurrency);
-            updateBadgeText(balance * price);
-        }
-    }
-    xmlHttp.open("GET", url, true);
-    xmlHttp.send(null);
-}
-
-var settedTimeout;
-
 function run() {
-    chrome.storage.sync.get(defaultSettings, function (obj) {
+    chrome.storage.sync.get(defaultSettings, async function (obj) {
         if (settedTimeout) clearTimeout(settedTimeout)
         settings = obj;
-        updateBalance();
+
+        let balance = await getBalance(settings.account);
+        let price = await getPrice(settings.baseCurrency);
+        var amount = balance * price;
+        var formattedAmount = formatBalance(amount);
+
+        updateBadgeText(formattedAmount);
+        updateTooltip(price, settings.baseCurrency);
+
         settedTimeout = setTimeout(run, settings.refreshRateInMinutes * 1000 * 60);
     });
 };

@@ -14,6 +14,7 @@
     "scripts": [
       "dependencies/stellar-sdk.min.js",
       "dependencies/numeral.js",
+      "src/common/request.js",
       "src/bg/background.js"
       ],
     "persistent": true
