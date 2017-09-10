@@ -16,11 +16,11 @@ function restore_options() {
     chrome.storage.sync.get({
         baseCurrency: "USD",
         refreshRateInMinutes: "5",
-        account: ""
+        publicKey: ""
     }, function (items) {
         document.getElementById('baseCurrency').value = items.baseCurrency;
         document.getElementById('refreshRate').value = items.refreshRateInMinutes;
-        document.getElementById('account').value = items.account;
+        document.getElementById('publicKey').value = items.publicKey;
     });
 }
 
@@ -49,4 +49,4 @@ var currencies = ["BTC", "USD", "EUR", "CHF", "GBP", "AUD", "BGN", "BRL", "CAD",
 
 document.addEventListener('DOMContentLoaded', initView);
 registerOnChangeEventListner(document.getElementsByTagName('select'));
-document.getElementById('account').addEventListener('input', save_options);
+document.getElementById('publicKey').addEventListener('input', save_options);

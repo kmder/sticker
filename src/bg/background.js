@@ -4,7 +4,7 @@ var stellarServer = new StellarSdk.Server(stellarNetUrl);
 var defaultSettings = {
         baseCurrency: "USD",
         refreshRateInMinutes: "5",
-        account: ""
+        publicKey: ""
     };
 
 var settings = {};
@@ -77,7 +77,7 @@ function run() {
         if (settedTimeout) clearTimeout(settedTimeout)
         settings = obj;
 
-        let balance = await getBalance(settings.account);
+        let balance = await getBalance(settings.publicKey);
         let price = await getPrice(settings.baseCurrency);
         var amount = balance * price;
         var formattedAmount = formatBalance(amount);
